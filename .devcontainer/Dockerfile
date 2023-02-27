@@ -6,4 +6,6 @@ RUN apt-get update \
     mysql-server
 
 USER root
-RUN service mysql start; mysqladmin --user=root password "password"
+RUN service mysql start; \
+    mysql -u root -e 'UPDATE mysql.user SET plugin = "mysql_native_password" WHERE user = "root" AND plugin IN ("unix_socket", "auth_socket"); FLUSH PRIVILEGES;'; \
+    mysqladmin --host=127.0.0.1 --user=root password "password"
