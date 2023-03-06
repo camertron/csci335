@@ -13,7 +13,7 @@ services:
       - db_data:/var/lib/mysql
 
   app:
-    image: shopping_list:latest
+    image: shopping_list_compose:latest
     build:
       context: .
       dockerfile: Dockerfile

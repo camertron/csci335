@@ -6,7 +6,7 @@ RUN apk update && apk add ca-certificates build-base mariadb-client mariadb-dev
 RUN pip install --upgrade pip
 RUN pip install flask flask-sqlalchemy mysqlclient
 
-COPY web.py ./
+COPY web.py 01_create_items.sql ./
 
 CMD ["python", "web.py"]
 
