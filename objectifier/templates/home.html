@@ -1,0 +1,13 @@
+<html>
+    <title>The Objectifier</title>
+    <body>
+        <h1>Welcome to the Objectifier!</h1>
+        <form method="post" enctype="multipart/form-data">
+          <input type="file" name="file">
+          <input type="submit" value="Upload">
+        </form>
+      {% if image %}
+        <img src="/uploads/{{ image }}?random={{ range(0, 9999) | random }}" style="width: 100%"/>
+      {% endif %}
+    </body>
+</html>
