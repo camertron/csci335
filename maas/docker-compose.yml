@@ -1,0 +1,10 @@
+version: "3.8"
+services:
+  add-service:
+    image: add-service:latest
+
+  subtract-service:
+    image: subtract-service:latest
+
+  maas:
+    image: maas:latest
