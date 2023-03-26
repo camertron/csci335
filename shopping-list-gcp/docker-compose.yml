@@ -1,0 +1,23 @@
+version: "3.8"
+services:
+  db:
+    image: mysql:8.0
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_USER: shopper
+      MYSQL_PASSWORD: password
+      MYSQL_DATABASE: shopping_list
+    volumes:
+      - db_data:/var/lib/mysql
+
+  app:
+    image: us-central1-docker.pkg.dev/csci335-spring23-381720/shopping-list/shopping-list:latest
+    ports:
+      - 80:5000
+    depends_on:
+      - db
+
+volumes:
+  db_data: {}
