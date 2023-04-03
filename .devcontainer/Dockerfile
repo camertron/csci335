@@ -10,6 +10,9 @@ RUN echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] http://packages.c
     apt-get update -y && \
     apt-get install google-cloud-cli -y
 
+RUN curl -LO "https://dl.k8s.io/release/v1.26.3/bin/linux/amd64/kubectl" && \
+    sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+
 USER root
 RUN service mysql start; \
     mysql -u root -e 'UPDATE mysql.user SET plugin = "mysql_native_password" WHERE user = "root" AND plugin IN ("unix_socket", "auth_socket"); FLUSH PRIVILEGES;'; \
