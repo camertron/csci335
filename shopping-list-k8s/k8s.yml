@@ -59,7 +59,7 @@ spec:
     spec:
       containers:
       - image: us-central1-docker.pkg.dev/csci335-spring23-381720/shopping-list/shopping-list-k8s:latest
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         name: shopping-list-web
         ports:
         - containerPort: 5000
