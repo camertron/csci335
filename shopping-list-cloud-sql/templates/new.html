@@ -1,0 +1,15 @@
+<html>
+  <title>Shopping List</title>
+  <body>
+    <h1>Add Item</h1>
+    {% if error %}
+      <p style="color: red">{{ error }}</p>
+    {% endif %}
+    <form action="/add" method="POST">
+      Name: <input type="text" name="name" value="{{ name or "" }}"/>
+      Quantity: <input type="number" name="quantity" value="{{ quantity or "" }}"/>
+      <br>
+      <input type="Submit" name="submit" value="Submit"/>
+    </form>
+  </body>
+</html>
