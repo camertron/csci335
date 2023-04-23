@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS `shopping_list`.`items` (
+CREATE TABLE IF NOT EXISTS `{{MYSQL_DATABASE}}`.`items` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(255) NOT NULL,
   `quantity` SMALLINT NOT NULL,

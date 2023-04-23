@@ -1,17 +1,28 @@
 from flask import Flask, request, render_template, redirect
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import text
+import sqlalchemy
 import os
 import socket
 import time
 
+mysql_user = os.getenv("MYSQL_USER")
+mysql_password = os.getenv("MYSQL_PASSWORD")
+mysql_host = os.getenv("MYSQL_HOST")
+mysql_port = int(os.getenv("MYSQL_PORT"))
+mysql_database = os.getenv("MYSQL_DATABASE")
+mysql_url = (
+  f"mysql+mysqldb://{mysql_user}:{mysql_password}"
+  f"@{mysql_host}:{mysql_port}/{mysql_database}")
+
 def wait_for_db():
   s = socket.socket()
+  s.settimeout(1)
   tries = 0
 
   while True:
     try:
-      s.connect(("db", 3306))
+      s.connect((mysql_host, mysql_port))
       break
     except Exception as e:
       tries += 1
@@ -19,7 +30,7 @@ def wait_for_db():
       if tries > 6:
         raise e
 
-      print("Waiting for database...")
+      print("Waiting for database...", flush=True)
       time.sleep(3)
 
   s.close()
@@ -27,26 +38,21 @@ def wait_for_db():
 wait_for_db()
 
 
-mysql_user = os.getenv("MYSQL_USER")
-mysql_password = os.getenv("MYSQL_PASSWORD")
-mysql_host = os.getenv("MYSQL_HOST")
-mysql_port = os.getenv("MYSQL_PORT")
-mysql_database = os.getenv("MYSQL_DATABASE")
-mysql_url = (
-  f"mysql+mysqldb://{mysql_user}:{mysql_password}"
-  f"@{mysql_host}:{mysql_port}/{mysql_database}")
-
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = mysql_url
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db = SQLAlchemy(app)
 
-
 # create items table (if it doesn't exist)
-with open("01_create_items.sql") as f:
-  with app.app_context() as context:
-    db.session.execute(text(f.read()))
+with app.app_context() as context:
+  with open("01_create_database.sql") as f:
+    query = f.read().replace("{{MYSQL_DATABASE}}", mysql_database)
+    db.session.execute(text(query))
+
+  with open("02_create_items.sql") as f:
+    query = f.read().replace("{{MYSQL_DATABASE}}", mysql_database)
+    db.session.execute(text(query))
 
 
 class ItemRecord(db.Model):
