@@ -6,6 +6,8 @@ services:
     restart: always
     env_file:
       - .env.development
+    environment:
+      MYSQL_ROOT_PASSWORD: password
     volumes:
       - db_data:/var/lib/mysql
 
